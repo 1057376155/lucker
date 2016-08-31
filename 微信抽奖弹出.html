@@ -57,11 +57,11 @@
 		<p class="winner">张学友</p>
 		<p class="winner">马蓉</p>
 		<p class="winner">宋喆</p>
-		<p class="winner">王宝强</p>
+<!-- 		<p class="winner">王宝强</p>
 		<p class="winner">老黄</p>
 		<p class="winner">杨慧</p>
 		<p class="winner">陈凯生</p>
-		<p class="winner">刘德华</p>
+		<p class="winner">刘德华</p> -->
 	</div>
 	
 </body>
@@ -71,7 +71,6 @@
 <script type="text/javascript">
 	$("#luck").one().click(function(){
 		$('.winner').css("bottom","-100px");
-		$(".winner").velocity("stop");
 		var winnerSize=$(".winner").size();
 		var animate=[];
 		var objGather=[];
@@ -94,10 +93,11 @@
 			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:1000,easing:"easeOutExpo"}})
 			}
 			r=PositionDetection(objGather)
+			console.log(r);
 		}
-
-		$.Velocity.RunSequence(animate);
 		$(".winner").velocity("stop");
+		$.Velocity.RunSequence(animate);
+		
 		
 	});
 	//transition.bounceIn
