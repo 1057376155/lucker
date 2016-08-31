@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>微信抽奖弹出</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		html,body{
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+			position: fixed;
+		}
+		#luck{
+			position: absolute;
+			bottom: 20px;
+			background: orange;
+			border: none;
+			left: 0;
+			right: 0;
+			margin: auto;
+			color: white;
+			height: 30px;
+			width: 80px;
+			outline: none;
+		}
+		#luck:active{
+			font-size: 14px;
+			height: 32px;
+			width: 82px;
+		}
+		.winner{
+			position: absolute;
+			bottom: -100px;
+			font-weight: 600;
+			background:orange;
+			color: white;
+			display: inline-block;
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+			border-radius:50%;
+			font-size: 12px;
+			text-align: center;
+		}
+		p{
+			margin:0;
+		}
+	</style>
+</head>
+<body>
+	<input id="luck" type="button" value="抽奖">
+	<div class="luckList">
+		<p class="winner">陈凯生</p>
+		<p class="winner">刘德华</p>
+		<p class="winner">张学友</p>
+		<p class="winner">马蓉</p>
+		<p class="winner">宋喆</p>
+		<p class="winner">王宝强</p>
+		<p class="winner">老黄</p>
+		<p class="winner">杨慧</p>
+		<p class="winner">陈凯生</p>
+		<p class="winner">刘德华</p>
+	</div>
+	
+</body>
+<script src="js/jquery-1.9.0.min.js"></script>
+<script src="js/velocity.min.js"></script>
+<script src="js/velocity.ui.min.js"></script>
+<script type="text/javascript">
+	$("#luck").one().click(function(){
+		$('.winner').css("bottom","-100px");
+		$(".winner").velocity("stop");
+		var winnerSize=$(".winner").size();
+		var animate=[];
+		var objGather=[];
+		for(var i=0;i<winnerSize;i++){
+			var lr=randomLR("lr");
+			var br=randomLR("br");
+			CountPosition(lr,br,objGather);
+			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:1000,easing:"easeOutExpo"}})
+		}
+		var r=PositionDetection(objGather)
+		console.log(r);
+		while (r==false) {
+			winnerSize=$(".winner").size();
+			animate=[];
+			objGather=[];
+			for(var i=0;i<winnerSize;i++){
+			var lr=randomLR("lr");
+			var br=randomLR("br");
+			CountPosition(lr,br,objGather);
+			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:1000,easing:"easeOutExpo"}})
+			}
+			r=PositionDetection(objGather)
+		}
+
+		$.Velocity.RunSequence(animate);
+		$(".winner").velocity("stop");
+		
+	});
+	//transition.bounceIn
+	function randomLR(arg){
+		var wr=randomWr();
+		var hr=randomHr();
+		if(arg=="lr"){
+			while (wr<0) {
+				wr=randomWr()
+			}
+			return Math.ceil(wr);
+		}
+		else if(arg=="br"){
+			while(hr<60||hr>$(window).height()-120){
+				hr=randomHr()
+			}
+			return Math.ceil(hr);
+		}
+	}
+	function randomWr(){
+		var windowWidth=$(window).width();
+		return Math.random()*windowWidth-$(".winner").width();
+	}
+	function randomHr(){
+		var windowHeight=$(window).height();
+		return Math.random()*windowHeight-50;
+	}
+	function CountPosition(lr,br,objGather){
+		if(!lr&&!br){
+			console.log("参数为空");
+		}
+		var obj={
+			left:lr,
+			bottom:br,
+			right:$(".winner").width()+lr,
+			top:$(".winner").height()+br,
+		}
+		objGather.push(obj);
+		
+	}
+	function PositionDetection(objGather){
+		console.log(objGather.length);
+		for(var i=0;i<objGather.length;i++){
+			for(var j=0;j<objGather.length;j++){
+				if(i==j){
+					objGather.length+1;
+					continue;
+				}
+				var ileft=objGather[i].left;
+				var iright=objGather[i].right;
+				var itop=objGather[i].top;
+				var ibottom=objGather[i].bottom;
+				/*****************************/ 
+				var jleft=objGather[j].left;
+				var jright=objGather[j].right;
+				var jtop=objGather[j].top;
+				var jbottom=objGather[j].bottom;
+
+					// ileft>=jleft&&jleft>=0;
+					console.log(" i左值: "+ileft+" j左值 "+jleft+" i右值: "+iright+" j右值 "+jright+" i上值: "+itop+" j上值 "+jtop+" i下值: "+ibottom+" j下值 "+jbottom+"计算数"+i)
+					if((jleft<=iright&&jleft>=ileft||jright<=iright&&jright>=ileft)&&(jbottom<=itop&&jbottom>=ibottom||jtop<=itop&&jtop>=ibottom)){
+						return false;
+					}
+					// if(jbottom<=itop&&jbottom>=ibottom||jtop<=itop&&jtop>=ibottom)return false;
+				// if(ileft>=jleft||jleft>=0&&iright>=jright||jright>=320&&itop>=jtop||jtop>=568&&ibottom>=jbottom||jbottom>=0){
+				// 	return false;
+				// }
+				// objGather=null;
+			}
+		}//for循环闭合标签
+		return true;
+	}
+	function setPosition(objGather){
+			var animate=[];
+			var winnerSize=$(".winner").size();
+			for(var i=0;i<winnerSize;i++){
+			var lr=randomLR("lr");
+			var br=randomLR("br");
+			CountPosition(lr,br,objGather);
+			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:100,easing:"easeOutExpo"}})
+		}
+		return animate;
+	}
+</script>
+</html>
