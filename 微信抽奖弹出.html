@@ -57,11 +57,11 @@
 		<p class="winner">张学友</p>
 		<p class="winner">马蓉</p>
 		<p class="winner">宋喆</p>
-<!-- 		<p class="winner">王宝强</p>
+		<p class="winner">王宝强</p>
 		<p class="winner">老黄</p>
 		<p class="winner">杨慧</p>
 		<p class="winner">陈凯生</p>
-		<p class="winner">刘德华</p> -->
+		<p class="winner">刘德华</p>
 	</div>
 	
 </body>
@@ -71,39 +71,21 @@
 <script type="text/javascript">
 	$("#luck").one().click(function(){
 		$('.winner').css("bottom","-100px");
-		var winnerSize=$(".winner").size();
-		var animate=[];
-		var objGather=[];
-		for(var i=0;i<winnerSize;i++){
-			var lr=randomLR("lr");
-			var br=randomLR("br");
-			CountPosition(lr,br,objGather);
-			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:1000,easing:"easeOutExpo"}})
-		}
-		var r=PositionDetection(objGather)
+		var setPositionValue=setPosition(1000)
+		var r=PositionDetection(setPositionValue.objGather)
 		console.log(r);
 		while (r==false) {
-			winnerSize=$(".winner").size();
-			animate=[];
-			objGather=[];
-			for(var i=0;i<winnerSize;i++){
-			var lr=randomLR("lr");
-			var br=randomLR("br");
-			CountPosition(lr,br,objGather);
-			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:1000,easing:"easeOutExpo"}})
-			}
-			r=PositionDetection(objGather)
-			console.log(r);
+			setPositionValue=setPosition(1000)
+			r=PositionDetection(setPositionValue.objGather)
 		}
 		$(".winner").velocity("stop");
-		$.Velocity.RunSequence(animate);
-		
-		
+		$.Velocity.RunSequence(setPositionValue.animate);
 	});
 	//transition.bounceIn
+	//randomLR 函数用于获取名字显示的范围
 	function randomLR(arg){
-		var wr=randomWr();
-		var hr=randomHr();
+		var wr=randomWr();//获取横向活动范围
+		var hr=randomHr();//获取纵向活动范围
 		if(arg=="lr"){
 			while (wr<0) {
 				wr=randomWr()
@@ -117,15 +99,18 @@
 			return Math.ceil(hr);
 		}
 	}
+	//获取横向活动范围
 	function randomWr(){
 		var windowWidth=$(window).width();
 		return Math.random()*windowWidth-$(".winner").width();
 	}
+	//获取纵向活动范围
 	function randomHr(){
 		var windowHeight=$(window).height();
 		return Math.random()*windowHeight-50;
 	}
-	function CountPosition(lr,br,objGather){
+	//根据传入的左距和下距计算出上距和右距
+	function CountPosition(lr,br){
 		if(!lr&&!br){
 			console.log("参数为空");
 		}
@@ -135,9 +120,10 @@
 			right:$(".winner").width()+lr,
 			top:$(".winner").height()+br,
 		}
-		objGather.push(obj);
+		return obj;
 		
 	}
+	//防止元素重叠的一个计算，如果元素有重叠，就返回false，没有重叠返回true
 	function PositionDetection(objGather){
 		console.log(objGather.length);
 		for(var i=0;i<objGather.length;i++){
@@ -156,30 +142,32 @@
 				var jtop=objGather[j].top;
 				var jbottom=objGather[j].bottom;
 
-					// ileft>=jleft&&jleft>=0;
-					console.log(" i左值: "+ileft+" j左值 "+jleft+" i右值: "+iright+" j右值 "+jright+" i上值: "+itop+" j上值 "+jtop+" i下值: "+ibottom+" j下值 "+jbottom+"计算数"+i)
-					if((jleft<=iright&&jleft>=ileft||jright<=iright&&jright>=ileft)&&(jbottom<=itop&&jbottom>=ibottom||jtop<=itop&&jtop>=ibottom)){
+					// console.log(" i左值: "+ileft+" j左值 "+jleft+" i右值: "+iright+" j右值 "+jright+" i上值: "+itop+" j上值 "+jtop+" i下值: "+ibottom+" j下值 "+jbottom+"计算数"+i)
+					if((jleft<=iright&&jleft>=ileft||jright<=iright&&jright>=ileft)
+						&&(jbottom<=itop&&jbottom>=ibottom||jtop<=itop&&jtop>=ibottom)){
 						return false;
 					}
-					// if(jbottom<=itop&&jbottom>=ibottom||jtop<=itop&&jtop>=ibottom)return false;
-				// if(ileft>=jleft||jleft>=0&&iright>=jright||jright>=320&&itop>=jtop||jtop>=568&&ibottom>=jbottom||jbottom>=0){
-				// 	return false;
-				// }
-				// objGather=null;
 			}
 		}//for循环闭合标签
 		return true;
 	}
-	function setPosition(objGather){
-			var animate=[];
-			var winnerSize=$(".winner").size();
+	//设定动画的速度
+	function setPosition(speed){
+		var winnerSize=$(".winner").size();
+		var animate=[];
+		var objGather=[];
 			for(var i=0;i<winnerSize;i++){
-			var lr=randomLR("lr");
-			var br=randomLR("br");
-			CountPosition(lr,br,objGather);
-			animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:100,easing:"easeOutExpo"}})
+				var lr=randomLR("lr");
+				var br=randomLR("br");
+				objGather.push(CountPosition(lr,br));
+				animate.push({e:$(".winner").eq(i),p:{bottom:br,left:lr},o:{duration:speed,easing:"easeOutExpo"}})
+				// console.log(objGather);
+			}
+		var setPositionValue={
+			animate:animate,
+			objGather:objGather,
 		}
-		return animate;
+		return setPositionValue;
 	}
 </script>
 </html>
