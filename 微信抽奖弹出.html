@@ -48,6 +48,7 @@
 			font-size: 12px;
 			text-align: center;
 /*			border:white solid 2px;*/
+			transform:scale(1);
 		}
 		p{
 			margin:0;
@@ -256,14 +257,24 @@
 				$(this).velocity({
 					backgroundColor:getColor(), 
 				},{duration:1000});
-				$(this).velocity({
-					width:"52px",
-					height:"52px",
-					lineHeight:"52px",
-				},{duration:400,easing:'easeInElastic'});
+				if(getRandomNum(3)==1){
+					$(this).velocity({
+					scale:'1.2',
+					},{duration:500,easing:'easeOutElastic'});
+				}
+				else if(getRandomNum(3)==2){
+					
+				}
+				else{
+					$(this).velocity({
+					scale:'0.9',
+					},{duration:500,easing:'easeOutElastic'});
+				}
 				$(this).velocity("reverse",{duration:400,easing:'easeInElastic'})
 			});
-			
 		},4000);
+	function getRandomNum(endValue){
+		return Math.ceil(Math.random()*endValue);
+	}
 </script>
 </html>
