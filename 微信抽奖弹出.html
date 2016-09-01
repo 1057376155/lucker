@@ -11,19 +11,23 @@
 			margin: 0;
 			overflow: hidden;
 			position: fixed;
+			background-color: #ffeaa0;
 		}
 		#luck{
 			position: absolute;
 			bottom: 20px;
-			background: orange;
+			background:orange;
 			border: none;
 			left: 0;
 			right: 0;
 			margin: auto;
 			color: white;
-			height: 30px;
-			width: 80px;
+			height: 40px;
+			width: 100px;
 			outline: none;
+			border-radius:2px;
+			-webkit-appearance : none;
+			font-size: 16px;
 		}
 		#luck:active{
 			font-size: 14px;
@@ -34,7 +38,7 @@
 			position: absolute;
 			bottom: -100px;
 			font-weight: 600;
-			background:orange;
+			background:#808080;
 			color: white;
 			display: inline-block;
 			width: 50px;
@@ -43,6 +47,7 @@
 			border-radius:50%;
 			font-size: 12px;
 			text-align: center;
+/*			border:white solid 2px;*/
 		}
 		p{
 			margin:0;
@@ -60,8 +65,6 @@
 		<p class="winner">王宝强</p>
 		<p class="winner">老黄</p>
 		<p class="winner">杨慧</p>
-		<p class="winner">陈凯生</p>
-		<p class="winner">刘德华</p>
 	</div>
 	
 </body>
@@ -80,6 +83,7 @@
 		}
 		$(".winner").velocity("stop");
 		$.Velocity.RunSequence(setPositionValue.animate);
+//		beginAnimate(setColor(),true);
 	});
 	//transition.bounceIn
 	//randomLR 函数用于获取名字显示的范围
@@ -169,5 +173,97 @@
 		}
 		return setPositionValue;
 	}
+	
+	//以上的函数都是为了实现点击事件的排列
+	
+	//getColor这个函数是随机返回一个颜色
+	function getColor(){
+		var color={
+			color1:"#fff100",color2:"#8fc31f",color3:"#22ac38",color4:"#009944",
+			color5:"#009e96",color6:"#00a0e9",color7:"#0068b7",color8:"#e4007f",
+			color9:"#ff6138",color10:"#00a388",color11:"#ec4863",color12:"#d3ec48",
+			color13:"#99ec48",color14:"#48eca8",color15:"#7248ec",color16:"#ff3259",
+			color17:"#00a2ff",color18:"#ffce9e",color19:"#ffb59e",color20:"#ffb59e",	color21:"#990033",color22:"#CC6699",color23:"#FF6699",color24:"#FF3366",
+			color25:"#993366",color26:"#CC0066",color27:"#CC0033",color28:"#FF0066",
+			color29:"#FF0033",color30:"#FF3399",color32:"#FF9999",color33:"#FF99CC",	
+			color34:"#FF0099",color35:"#CC3366",color36:"#FF66CC",color37:"#FF33CC",	
+			color38:"#FFCCFF",color39:"#FF99FF",color40:"#660099",color41:"#666ff0",
+			color42:"#000cc0",color43:"#9933cc",color44:"#666699",color45:"#660066",
+			color46:"#333366",color47:"#0066cc",color48:"#9900ff",color49:"#333399",
+			color50:"#99ccff",color51:"#9933ff",color52:"#330099",color53:"#6699ff",
+			color54:"#9966cc",color55:"#3300cc",color56:"#003366",color57:"#330033",
+			color58:"#3300ff",color59:"#6699cc",color60:"#663399",color61:"#3333ff",
+			color62:"#006699",color63:"#6633cc",color64:"#3333cc",color65:"#3399cc",
+			color66:"#3399cc",color67:"#6600cc",color68:"#0066ff",color69:"#0099cc",
+			color70:"#9966ff",color71:"#0033ff",color72:"#66ccff",color73:"#330066",
+			color74:"#3366ff",color75:"#3399ff",color76:"#6600ff",color77:"#3366cc",
+			color78:"#003399",color79:"#6633ff",color80:"#000066",color81:"#0099ff",
+			color82:"#ccccff",color83:"#000033",color84:"#33ccff",color85:"#6600cc",
+			color86:"#0066ff",color87:"#0099cc",color88:"#9966ff",color89:"#0033ff",
+			color90:"#66ccff",color91:"#330066",color92:"#3366ff",color93:"#3399ff",
+			color94:"#6600ff",color95:"#3366cc",color96:"#003399",color97:"#6633ff",
+			color98:"#000066",color99:"#0099ff",color100:"#ccccff",color101:"#000033",
+			color102:"#33ccff",color103:"#9999ff",color104:"#0000ff",color105:"#00ccff",
+			color106:"#9999cc",color107:"#000099",color108:"#6666cc",color109:"#FFFFCC",
+			color110:"#FFCC00",color111:"#CC9909",color112:"#663300",color113:"#FF6600",
+			color114:"#663333",color115:"#CC6666",color116:"#FF6666",color117:"#FF0000",
+			color118:"#FFFF99",color119:"#FFCC66",color120:"#FF9900",color121:"#CC3300",
+			color122:"#996666",color123:"#FFCCCC",color124:"#660000",color125:"#FF3300",
+			color126:"#FF6666",color127:"#FFCC33",color128:"#CC6600",color129:"#FF6633",
+			color130:"#996633",color131:"#CC9999",color132:"#FF3333",color133:"#990000",
+			color134:"#CC9966",color135:"#FFFF33",color136:"#CC9933",color137:"#993300",
+			color138:"#FF9933",color139:"#330000",color141:"#993333",color142:"#CC3333",
+			color143:"#CC0000",color144:"#FFCC99",color145:"#FFFF00",color146:"#996600",
+			color147:"#CC6633",color148:"#99ffff",color149:"#33cccc",color150:"#00cc99",
+			color151:"#99ff99",color152:"#009966",color153:"#33ff33",color154:"#33ff00",
+			color155:"#99cc33",color156:"#ccc330",color157:"#66ffff",color158:"#66cccc",
+			color159:"#66ffcc",color160:"#66ff66",color161:"#009933",color162:"#00cc33",
+			color163:"#66ff00",color164:"#336600",color165:"#333000",color166:"#33ffff",
+			color167:"#339999",color168:"#99FFCC",color169:"#339933",color170:"#33FF66",
+			color171:"#33CC33",color172:"#99FF00",color173:"#669900",color174:"#666600",
+			color175:"#00FFFF",color176:"#336666",color177:"#00FF99",color178:"#99CC99",
+			color179:"#00FF66",color180:"#66FF33",color181:"#66CC00",color182:"#99CC00",
+			color183:"#999933",color184:"#00CCCC",color185:"#006666",color186:"#339966",
+			color187:"#66FF99",color188:"#ccffcc",color189:"#00ff00",color190:"#00cc00",
+			color191:"#ccff66",color192:"#cccc66",color193:"#009999",color194:"#003333",
+			color195:"#006633",color196:"#33ff99",color197:"#ccff99",color198:"#66cc33",
+			color199:"#33cc00",color200:"#ccff33",color201:"#666633",color202:"#669999",
+			color203:"#00ffcc",color204:"#336633",color205:"#33cc66",color206:"#99ff66",
+			color207:"#006600",color208:"#339900",color209:"#ccff00",color210:"#999966",
+			color211:"#99cccc",color212:"#33ffcc",color213:"#669966",color214:"#00cc66",
+			color215:"#99ff33",color216:"#003300",color217:"#99cc66",color218:"#999900",
+			color219:"#CCCC99",color220:"#CCFFFF",color221:"#33CC99",color222:"#66CC66",
+			color223:"#66CC99",color224:"#00FF33",color225:"#009900",color226:"#669900",
+			color227:"#669933",
+		}
+		var colorLength=getObjLength(color);
+		var num=Math.ceil(Math.random()*colorLength);
+		return color["color"+num];
+		
+	}
+//	console.log("获取颜色"+getColor());
+	//getObjLength函数是获取一个对象的长度
+	function getObjLength(obj){
+		var objLength=0;
+		for(var i in obj){
+			objLength++;
+		}
+		return objLength;
+	}
+	//下面的定时器用来更新背景色
+	setInterval(function(){
+			$(".winner").each(function(){
+				$(this).velocity({
+					backgroundColor:getColor(), 
+				},{duration:1000});
+				$(this).velocity({
+					width:"52px",
+					height:"52px",
+					lineHeight:"52px",
+				},{duration:400,easing:'easeInElastic'});
+				$(this).velocity("reverse",{duration:400,easing:'easeInElastic'})
+			});
+			
+		},4000);
 </script>
 </html>
